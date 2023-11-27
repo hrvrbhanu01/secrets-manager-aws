@@ -1,9 +1,8 @@
 const { storeSecrets, retrieveSecrets } = require('./dbsecrets');
 
-// Example usage:
-const secretName = 'your-secret-name';
-const username = 'your-username';
-const password = 'your-password';
+const secretName = 'secret-1';
+const username = 'bhanu01';
+const password = '7654321';
 
 storeSecrets(username, password, secretName);
 retrieveSecrets(secretName);
