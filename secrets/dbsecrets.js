@@ -10,7 +10,8 @@ AWS.config.update({
 
 const secretsManager = new AWS.SecretsManager();
 
-async function storeSecrets(username, password, secretName) {
+const storeSecrets = async(req, res) => {
+  const {username, password, secretName} = req.body;
   const secretValue = JSON.stringify({ username, password });
 
   const params = {
@@ -21,12 +22,16 @@ async function storeSecrets(username, password, secretName) {
   try {
     await secretsManager.createSecret(params).promise();
     console.log(`Secret ${secretName} stored successfully.`);
+    res.status(200).json({message:`Secret ${secretName} stored successfully.`})
   } catch (error) {
     console.error(`Error storing secret: ${error.message}`);
+    res.status(500).json({error: "Internal server error"})
+
   }
 }
 
-async function retrieveSecrets(secretName) {
+const retrieveSecrets = async(req, res) => {
+  const secretName = req.params.secretName;
   const params = {
     SecretId: secretName,
   };
@@ -35,10 +40,12 @@ async function retrieveSecrets(secretName) {
     const secret = await secretsManager.getSecretValue(params).promise();
     const { username, password } = JSON.parse(secret.SecretString);
     console.log(`Username: ${username}, Password: ${password}`);
-    return { username, password };
+  
+    res.status(200).json({ username, password })
+
   } catch (error) {
     console.error(`Error retrieving secret: ${error.message}`);
-    return null;
+    res.status(500).json({error: "Internal server error"})
   }
 }
 
