@@ -1,11 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-app.use(bodyParser);
+app.use(express.json());
 const secretRoutes = require("./secretRoutes");
 
 
-//app.use("/api/v1",secretRoutes)
+//app.use("/api/v1",secretRoutes);
+app.use(secretRoutes);
 
 const { storeSecrets, retrieveSecrets } = require('./dbsecrets');
 
@@ -15,6 +16,6 @@ const { storeSecrets, retrieveSecrets } = require('./dbsecrets');
 
 // storeSecrets(username, password, secretName);
 // retrieveSecrets(secretName);
-const port = 3000;
+const port = 4000;
 app.listen(port ,()=> {
-    console.log("SERVER LISTENING ON PORT : 3000")});
+    console.log("SERVER LISTENING ON PORT : 4000")});
